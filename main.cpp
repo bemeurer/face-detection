@@ -1,7 +1,10 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include <fstream>
+#include "cascades/frontal_face.h"
 
 using namespace cv;
+
 
 int main() {
     VideoCapture vid(0);
@@ -11,7 +14,9 @@ int main() {
     namedWindow("stream", WINDOW_AUTOSIZE);
     CascadeClassifier faceCascade;
     CascadeClassifier smileCascade;
-    faceCascade.load("cascades/frontal_face.xml");
+    FileStorage fs(face_array, FileStorage::READ|FileStorage::MEMORY);
+    FileNode root = fs.getFirstTopLevelNode();
+    faceCascade.read(root);
     smileCascade.load("cascades/smile.xml");
     Mat frame;
     while (true) {
@@ -34,8 +39,8 @@ int main() {
             line(frame, cvPoint(0, half), cvPoint(frame_gray.cols, half), CV_RGB(0, 0, 0), 2);
 
             std::vector<Rect> smile;
-            smileCascade.detectMultiScale(Mat(frame_gray, lower_face), smile, 1.2, 50, 0 | CV_HAAR_SCALE_IMAGE,
-                                          Size(10, 10));
+            smileCascade.detectMultiScale(Mat(frame_gray, lower_face), smile, 1.2, 40, 0 | CV_HAAR_DO_CANNY_PRUNING,
+                                          Size(30, 30));
             for (size_t x = 0; x < smile.size(); x++) {
                 Rect smile_r(faces[i].x + smile[x].x, half + smile[x].y, smile[x].width, smile[x].height);
                 rectangle(frame, smile_r, CV_RGB(0, 255, 0), 3);
