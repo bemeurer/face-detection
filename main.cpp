@@ -5,6 +5,12 @@
 
 using namespace cv;
 
+void loadFromHeader(CascadeClassifier *foo, char *cascadeArray){
+  FileStorage fs(cascadeArray, FileStorage::READ|FileStorage::MEMORY);
+  FileNode root = fs.getFirstTopLevelNode();
+  (*foo).read(root);
+}
+
 
 int main() {
     VideoCapture vid(0);
@@ -14,9 +20,7 @@ int main() {
     namedWindow("stream", WINDOW_AUTOSIZE);
     CascadeClassifier faceCascade;
     CascadeClassifier smileCascade;
-    FileStorage fs(face_array, FileStorage::READ|FileStorage::MEMORY);
-    FileNode root = fs.getFirstTopLevelNode();
-    faceCascade.read(root);
+    loadFromHeader(faceCascade, face_array)
     smileCascade.load("cascades/smile.xml");
     Mat frame;
     while (true) {
