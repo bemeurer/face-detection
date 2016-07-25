@@ -2,6 +2,7 @@
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include "cascades/frontal_face.h"
+#include "cascades/smile.h"
 
 using namespace cv;
 
@@ -20,8 +21,8 @@ int main() {
     namedWindow("stream", WINDOW_AUTOSIZE);
     CascadeClassifier faceCascade;
     CascadeClassifier smileCascade;
-    loadFromHeader(faceCascade, face_array)
-    smileCascade.load("cascades/smile.xml");
+    loadFromHeader(&faceCascade, face_array);
+    loadFromHeader(&smileCascade, smile_array);
     Mat frame;
     while (true) {
         vid >> frame;
