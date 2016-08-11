@@ -4,8 +4,3 @@
 # Fortran module files
 # Compiled Static libraries
 # Executables
-.idea/face-detection.iml
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
-bin/
